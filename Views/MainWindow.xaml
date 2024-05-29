@@ -15,16 +15,28 @@
             <StackPanel>
                 
             </StackPanel>
-            
-            <TreeView x:Name="tree" ItemsSource="{Binding Objects}" Width="100">
+            <TreeView ItemsSource="{Binding Objects}">
                 <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate DataType="x:Type vm:MainViewModel"
-                                              ItemsSource ="{Binding Attributess}">
-                        
-                            <TextBlock Text="{Binding Type}" />
+                    <HierarchicalDataTemplate ItemsSource="{Binding ChildLinks}">
+                        <TextBlock Text="{Binding Type}"/>
+                        <HierarchicalDataTemplate.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Child.Attributess}">
+                                <TextBlock Text="{Binding Child.Product}"/>
+                                <HierarchicalDataTemplate.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding name}"/>
+                                            <TextBlock Text=": "/>
+                                            <TextBlock Text="{Binding value}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </HierarchicalDataTemplate.ItemTemplate>
+                            </HierarchicalDataTemplate>
+                        </HierarchicalDataTemplate.ItemTemplate>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
+
         </StackPanel>
     </Grid>
 </Window>

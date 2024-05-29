@@ -38,9 +38,9 @@ namespace askonUFA.ViewModels
             await ret.GetObjects();
             return ret;
         }
-        private ObservableCollection<Objects> attributes = new ObservableCollection<Objects>();
+        
         private TreeObjectsModel _objectModel = new TreeObjectsModel();
-        private ObservableCollection<Objects> _objects = new ObservableCollection<Objects>();
+        
         
     }
 }
