@@ -1,9 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace askonUFA.Database
 {
@@ -27,7 +31,7 @@ namespace askonUFA.Database
             {
                 await context.Attributes.AddAsync(new Attributes()
                 {
-                    objectId = objectId,
+                    Id = objectId,
                     name = name,
                     value = value
                 });
@@ -46,22 +50,33 @@ namespace askonUFA.Database
                 await context.SaveChangesAsync();
             }
         }
-        public static async Task<List<Objects>> GetAllObjects()
+        public static List<Objects> GetAllObjects()
         {
+            
+            List<Objects> objects = new List<Objects>();
             using (var context = new ApplicationDbContext())
             {
-
-                List<Objects> objects = await context.Objects
-            .Include(obj => obj.Attributess)
-            .Include(obj => obj.ChildLinks)
-                .ThenInclude(link => link.Child)
-            .Include(obj => obj.ParentLinks)
-                .ThenInclude(link => link.Parent)
-            .ToListAsync();
-                return objects;
+                objects =  context.Objects
+                    .Include(obj => obj.ChildLinks)
+                        .ThenInclude(link => link.Child)
+                    .Include(obj => obj.ParentLinks)
+                        .ThenInclude(link => link.Parent)
+                    .ToList();
             }
+            
+            return objects;
         }
+        public static List<Attributes> GetAllAttributes()
+        {
+            
+            List<Attributes> objects = new List<Attributes>();
+            using (var context = new ApplicationDbContext())
+            {
+                objects =  context.Attributes.ToList();
+            }
 
+            return objects;
+        }
 
     }
 }

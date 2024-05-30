@@ -10,7 +10,8 @@ namespace askonUFA.Database
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext()
-        {
+        { 
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -19,26 +20,27 @@ namespace askonUFA.Database
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Ignore<TreeItems>();
+
             modelBuilder.Entity<Attributes>()
-                .HasKey(a => new {a.objectId})
-                ;
-            modelBuilder.Entity<Attributes>()
-        .HasOne(a => a.Object) // объект, с которым устанавливается связь
-        .WithMany() // указываем, что у объекта может быть много атрибутов
-        .HasForeignKey(a => a.objectId); // внешний ключ в сущности Attribute
+                        .HasOne(a => a.Object)
+                        .WithMany(b => b.Attributess)
+                        .HasForeignKey(a => a.ObjectId); // Используйте a => a.ObjectId здесь
 
             modelBuilder.Entity<Links>()
-        .HasOne(l => l.Parent)
-        .WithMany(p => p.ChildLinks)
-        .HasForeignKey(l => l.ParentId)
-        .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Objects>().ToTable("Objects");
+                        .HasOne(l => l.Parent)
+                        .WithMany(p => p.ChildLinks)
+                        .HasForeignKey(l => l.ParentId)
+                        .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Objects>()
+                        .ToTable("Objects");
 
             modelBuilder.Entity<Links>()
-        .HasOne(l => l.Child)
-        .WithMany(c => c.ParentLinks)
-        .HasForeignKey(l => l.ChildId)
-        .OnDelete(DeleteBehavior.Restrict);
+                        .HasOne(l => l.Child)
+                        .WithMany(c => c.ParentLinks)
+                        .HasForeignKey(l => l.ChildId)
+                        .OnDelete(DeleteBehavior.Restrict);
         }
         public DbSet<Attributes> Attributes {  get; set; }
         public DbSet<Links> Links { get; set; }

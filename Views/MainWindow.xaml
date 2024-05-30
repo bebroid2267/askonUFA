@@ -5,37 +5,85 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:askonUFA"
         mc:Ignorable="d"
+        xmlns:data="clr-namespace:askonUFA.Database"
+        xmlns:util="clr-namespace:askonUFA.Utilities"
         xmlns:vm ="clr-namespace:askonUFA.ViewModels" 
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:cmd="http://www.galasoft.ch/mvvmlight"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
         Title="MainWindow" 
-        Height="450" 
-        Width="800">
+        Height="500" 
+        Width="900">
     <Grid>
+        <Button x:Name="ButtonAdd" 
+                Content="Добавить" 
+                Margin="650,50,100,350"
+                Command="{Binding AddObject}"/>
+        
+        <TextBox Text="{Binding CurrentObject.Product}" 
+                 HorizontalAlignment="Left" 
+                 Margin="500,0,0,350" 
+                 TextWrapping="Wrap"  
+                 Width="120" 
+                 Height="67" 
+                 VerticalAlignment="Bottom"/>
+        
+        <TextBox Text="{Binding CurrentObject.Type}" 
+                 HorizontalAlignment="Left" 
+                 Margin="320,67,0,350" 
+                 TextWrapping="Wrap"  
+                 Width="120"/>
+        <Label Content="Product" Margin="450,60,401,392"/>
+        <Label Content="Type" Margin="260,60,598,383"/>
+
+
+        <TextBox Text="{Binding CurrentAttribute.value}" 
+         HorizontalAlignment="Left" 
+         Margin="500,0,0,250" 
+         TextWrapping="Wrap"  
+         Width="120" 
+         Height="67" 
+         VerticalAlignment="Bottom"/>
+
+        <TextBox Text="{Binding CurrentAttribute.name}" 
+         HorizontalAlignment="Left" 
+         Margin="320,167,0,250" 
+         TextWrapping="Wrap"  
+         Width="120"/>
+        <Label Content="Value" Margin="450,185,415,250"/>
+
+        <Label Content="Name" Margin="260,185,598,250"/>
         <StackPanel Orientation="Horizontal">
-            <StackPanel>
-                
+            <StackPanel Width="164">
+
             </StackPanel>
-            <TreeView ItemsSource="{Binding Objects}">
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding ChildLinks}">
-                        <TextBlock Text="{Binding Type}"/>
-                        <HierarchicalDataTemplate.ItemTemplate>
-                            <HierarchicalDataTemplate ItemsSource="{Binding Child.Attributess}">
-                                <TextBlock Text="{Binding Child.Product}"/>
-                                <HierarchicalDataTemplate.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding name}"/>
-                                            <TextBlock Text=": "/>
-                                            <TextBlock Text="{Binding value}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </HierarchicalDataTemplate.ItemTemplate>
-                            </HierarchicalDataTemplate>
-                        </HierarchicalDataTemplate.ItemTemplate>
+            <TreeView ItemsSource="{Binding Objects}"
+                      SelectedItemChanged="TreeView_SelectedItemChanged">
+                <TreeView.Resources>
+                    <!-- Шаблон для Objects -->
+                    <HierarchicalDataTemplate DataType="{x:Type data:Objects}" ItemsSource="{Binding CombinedChildren}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Type}"/>
+                            <TextBlock Text=" "/>
+                            <TextBlock Text="{Binding Product}"/>
+                        </StackPanel>
                     </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
+
+                    <!-- Шаблон для Attributes -->
+                    <DataTemplate DataType="{x:Type data:Attributes}">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Предполагается, что у Attributes есть свойства name и value -->
+                            <TextBlock Text="{Binding name}"/>
+                            <TextBlock Text=": "/>
+                            <TextBlock Text="{Binding value}"/>
+                        </StackPanel>
+                    </DataTemplate>
+
+                    <!-- Похожие шаблоны для других типов данных можно определить здесь -->
+                </TreeView.Resources>
             </TreeView>
+
+
 
         </StackPanel>
     </Grid>

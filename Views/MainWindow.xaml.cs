@@ -1,9 +1,11 @@
-﻿using askonUFA.ViewModels;
+﻿using askonUFA.Database;
+using askonUFA.ViewModels;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -20,13 +22,20 @@ namespace askonUFA
         public MainWindow()
         {
             InitializeComponent();
-            Loaded += MainWindow_Loaded;
+            DataContext = new MainViewModel();
         }
-        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            this.DataContext = await MainViewModel.CreateAsync();
-        }
+        //private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    this.DataContext = await MainViewModel.CreateAsync();
+        //}
 
-       
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (sender is TreeView treeView)
+            {
+                var selectedItem = treeView.SelectedItem;
+                ButtonAdd.CommandParameter = selectedItem;
+            }
+        }
     }
 }
