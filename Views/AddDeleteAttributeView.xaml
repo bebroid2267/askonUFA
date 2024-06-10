@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="askonUFA.Views.AddDeleteAttributeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:askonUFA.Views" xmlns:viewmodels="clr-namespace:askonUFA.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:AddDeleteAttributeViewModel}"
+             mc:Ignorable="d" 
+             Height="287" 
+             Width="450">
+    <Grid Margin="0,0,4,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="319" />
+            <ColumnDefinition Width="0" />
+            <ColumnDefinition Width="81" />
+        </Grid.ColumnDefinitions>
+
+        <Border Background="DimGray"
+            CornerRadius="25"
+            Grid.ColumnSpan="3" 
+            Grid.RowSpan="5" 
+                HorizontalAlignment="Left" Width="446" Margin="0,0,0,59"/>
+
+        <Label Grid.Row="0" 
+               Foreground="WhiteSmoke"
+               FontSize="35"
+               Grid.ColumnSpan="3"
+               Content="Добавление аттрибута" 
+               Margin="0,0,153,0" />
+
+        <Label Grid.Row="1"
+               FontSize="30"
+               HorizontalAlignment="Left"
+               Foreground="Orange"
+               Content="Name:" 
+               Margin="26,0,0,0" 
+               Width="94"
+               />
+        <TextBox Grid.Row="1"
+                   Grid.Column="1" 
+                   Text="{Binding CurrentAttribute.name}"
+                   Margin="0,10,153,10" 
+                   Background="WhiteSmoke"
+                   Grid.ColumnSpan="2"/>
+
+
+        <Label Grid.Row="2"
+               FontSize="30"
+               Foreground="Orange"
+               Content="Value:" Margin="26,0,0,0"
+               />
+
+        <TextBox Grid.Row="2"
+                   Grid.ColumnSpan="2"
+                   Text="{Binding CurrentAttribute.value}"
+                   Background="WhiteSmoke"
+                   Margin="0,10,153,10"
+                   Grid.Column="1"/>
+
+
+        <Label Grid.Row="4" 
+               Foreground="WhiteSmoke"
+               FontSize="25"
+               Grid.ColumnSpan="2"
+               VerticalAlignment="Top"
+               Content="Удаление аттрибута:" 
+               Margin="42,10,5,0" />
+
+        <Button Content="Добавить"
+                Grid.Row="3"
+                Command="{Binding AddObjectAttribute}"
+                Grid.Column="1"
+                FontSize="25" 
+                Margin="0,5,217,15" Grid.ColumnSpan="2"
+                />
+
+        
+
+    </Grid>
+</UserControl>

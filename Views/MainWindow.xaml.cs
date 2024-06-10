@@ -34,7 +34,9 @@ namespace askonUFA
             if (sender is TreeView treeView)
             {
                 var selectedItem = treeView.SelectedItem;
-                ButtonAdd.CommandParameter = selectedItem;
+                //ButtonAd.CommandParameter = selectedItem;
+                var vm = DataContext as MainViewModel;
+                vm.ShowAddDeleteObjectView.Execute(selectedItem);
             }
         }
     }

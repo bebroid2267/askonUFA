@@ -10,8 +10,7 @@ namespace askonUFA.Database
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext()
-        { 
-            Database.EnsureDeleted();
+        {
             Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -31,7 +30,7 @@ namespace askonUFA.Database
                         .HasOne(l => l.Parent)
                         .WithMany(p => p.ChildLinks)
                         .HasForeignKey(l => l.ParentId)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Objects>()
                         .ToTable("Objects");
@@ -40,7 +39,7 @@ namespace askonUFA.Database
                         .HasOne(l => l.Child)
                         .WithMany(c => c.ParentLinks)
                         .HasForeignKey(l => l.ChildId)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
         }
         public DbSet<Attributes> Attributes {  get; set; }
         public DbSet<Links> Links { get; set; }

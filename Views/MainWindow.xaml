@@ -7,33 +7,76 @@
         mc:Ignorable="d"
         xmlns:data="clr-namespace:askonUFA.Database"
         xmlns:util="clr-namespace:askonUFA.Utilities"
-        xmlns:vm ="clr-namespace:askonUFA.ViewModels" 
+        xmlns:vm ="clr-namespace:askonUFA.ViewModels"
+        xmlns:view ="clr-namespace:askonUFA.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:cmd="http://www.galasoft.ch/mvvmlight"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
         Title="MainWindow" 
         Height="500" 
-        Width="900">
+        Width="900"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="CanMinimize">
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:AddDeleteObjectViewModel}">
+            <view:AddDeleteObjectView/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Window.Background>
+        <ImageBrush ImageSource="/Views/pic.jpg" x:Name="pictureBackGround"/>
+    </Window.Background>
     <Grid>
-        <Button x:Name="ButtonAdd" 
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <Label Content="АСКОН Дерево обьектов" 
+               FontFamily="Arial Black"
+               Foreground="WhiteSmoke"
+               FontSize="40" 
+               Margin="94,0,0,0"/>
+
+        <!--<Button x:Name="ButtonAd" 
                 Content="Добавить" 
                 Margin="650,50,100,350"
-                Command="{Binding AddObject}"/>
-        
+                Command="{Binding AddObject}"/>-->
+
+        <Button x:Name="ButtonDeleteObject" 
+        Content="Удалить обьект" 
+        Margin="650,50,100,350"
+        Command="{Binding AddObject}"/>
+
+        <Button x:Name="ButtonAddAttribute" 
+        Content="Добавить аттрибут" 
+        Margin="650,50,100,350"
+        Command="{Binding AddObject}"/>
+
+        <Button x:Name="ButtonDeleteAttribute" 
+        Content="Удалить аттрибут" 
+        Margin="650,50,100,350"
+        Command="{Binding AddObject}"/>
+
         <TextBox Text="{Binding CurrentObject.Product}" 
                  HorizontalAlignment="Left" 
-                 Margin="500,0,0,350" 
+                 Margin="500,0,0,-100" 
+                 Grid.Row="1"
+                 
                  TextWrapping="Wrap"  
                  Width="120" 
-                 Height="67" 
+                 Height="69" 
                  VerticalAlignment="Bottom"/>
-        
+
         <TextBox Text="{Binding CurrentObject.Type}" 
                  HorizontalAlignment="Left" 
-                 Margin="320,67,0,350" 
+                 Margin="320,100,0,-126" 
                  TextWrapping="Wrap"  
-                 Width="120"/>
-        <Label Content="Product" Margin="450,60,401,392"/>
+                 Width="120" Grid.Row="1"/>
+        <Label Content="Product" Margin="450,10,388,1" Grid.Row="1"/>
         <Label Content="Type" Margin="260,60,598,383"/>
 
 
@@ -53,13 +96,38 @@
         <Label Content="Value" Margin="450,185,415,250"/>
 
         <Label Content="Name" Margin="260,185,598,250"/>
-        <StackPanel Orientation="Horizontal">
-            <StackPanel Width="164">
-
-            </StackPanel>
-            <TreeView ItemsSource="{Binding Objects}"
-                      SelectedItemChanged="TreeView_SelectedItemChanged">
+        <StackPanel Orientation="Horizontal" Margin="0,73,455,-390"
+                    Background="Transparent" Grid.RowSpan="2">
+            
+            <TreeView ItemsSource="{Binding Objects}" 
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      SelectedItemChanged="TreeView_SelectedItemChanged" 
+                      Width="444">
                 <TreeView.Resources>
+                    <!-- Стиль для TextBlock внутри TreeView -->
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontFamily" Value="Segoe UI"/>
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="Orange" />
+                        <Setter Property="FontSize" Value="20"/>
+                        <Setter Property="FontStyle" Value="Oblique"/>
+                    </Style>
+
+                    <!-- Стиль для TreeViewItem -->
+                    <Style TargetType="TreeViewItem">
+                        <Setter Property="FontFamily" Value="Segoe UI"/>
+                        <Setter Property="FontSize" Value="20"/>
+                        <Setter Property="Padding" Value="4,2"/>
+                        <Setter Property="Foreground" Value="Orange" />
+                        <Setter Property="FontStyle" Value="Oblique"/>
+                        <Setter Property="Margin" Value="2"/>
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                        <Setter Property="BorderBrush" Value="#CCC"/>
+                        <Setter Property="SnapsToDevicePixels" Value="True"/>
+                    </Style>
+
                     <!-- Шаблон для Objects -->
                     <HierarchicalDataTemplate DataType="{x:Type data:Objects}" ItemsSource="{Binding CombinedChildren}">
                         <StackPanel Orientation="Horizontal">
@@ -72,7 +140,6 @@
                     <!-- Шаблон для Attributes -->
                     <DataTemplate DataType="{x:Type data:Attributes}">
                         <StackPanel Orientation="Horizontal">
-                            <!-- Предполагается, что у Attributes есть свойства name и value -->
                             <TextBlock Text="{Binding name}"/>
                             <TextBlock Text=": "/>
                             <TextBlock Text="{Binding value}"/>
@@ -82,9 +149,35 @@
                     <!-- Похожие шаблоны для других типов данных можно определить здесь -->
                 </TreeView.Resources>
             </TreeView>
-
-
-
         </StackPanel>
+        <Button IsEnabled="False" 
+                Content="Обьект"
+                Visibility="Visible" 
+                Margin="674,77,100,-71" 
+                RenderTransformOrigin="0.5,0.5" 
+                Grid.Row="1" />
+
+
+        <Button IsEnabled="False" 
+                Content="Обьект"
+                Visibility="Visible" 
+                Margin="674,77,100,-71" 
+                RenderTransformOrigin="0.5,0.5" 
+                Grid.Row="1">
+            
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
+        <ContentControl Panel.ZIndex="1"
+                        Content="{Binding CurrentVM}" 
+                        Margin="440,73,26,-319" 
+                        Grid.RowSpan="2"/>
+
     </Grid>
 </Window>
